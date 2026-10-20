@@ -1028,111 +1028,131 @@ export default function App() {
                   COLUMNA 1: CATÁLOGO DE CABAÑAS Y TINAJAS
                  ------------------------------------------------------------- */}
               <div
-                className={`w-full lg:w-[290px] flex flex-col gap-2 shrink-0 ${
+                className={`w-full lg:w-[330px] bg-white border border-[#E4E4E7] rounded-2xl p-4 sm:p-5 shadow-2xs flex flex-col justify-between shrink-0 ${
                   guestMobileTab !== 'cabins' ? 'hidden lg:flex' : 'flex'
                 }`}
               >
-                {/* Filtro por Categoría en Móvil/Desktop */}
-                <div className="flex items-center justify-between pb-1">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#71717A]">
-                    Elige tu espacio
-                  </span>
-                  <div className="inline-flex p-0.5 rounded-lg bg-[#F4F4F5] text-[10px] font-semibold">
-                    <button
-                      onClick={() => setCabinCategoryFilter('all')}
-                      className={`px-2 py-0.5 rounded-md cursor-pointer ${
-                        cabinCategoryFilter === 'all'
-                          ? 'bg-white text-[#09090B] shadow-2xs font-bold'
-                          : 'text-[#71717A]'
-                      }`}
-                    >
-                      Todas ({cabins.length})
-                    </button>
-                    <button
-                      onClick={() => setCabinCategoryFilter('cabana')}
-                      className={`px-2 py-0.5 rounded-md cursor-pointer ${
-                        cabinCategoryFilter === 'cabana'
-                          ? 'bg-white text-[#09090B] shadow-2xs font-bold'
-                          : 'text-[#71717A]'
-                      }`}
-                    >
-                      Cabañas
-                    </button>
-                    <button
-                      onClick={() => setCabinCategoryFilter('tinaja')}
-                      className={`px-2 py-0.5 rounded-md cursor-pointer ${
-                        cabinCategoryFilter === 'tinaja'
-                          ? 'bg-white text-[#09090B] shadow-2xs font-bold'
-                          : 'text-[#71717A]'
-                      }`}
-                    >
-                      Tinajas
-                    </button>
+                <div>
+                  {/* Filtro por Categoría en Móvil/Desktop */}
+                  <div className="flex items-center justify-between pb-3 border-b border-[#E4E4E7] mb-3">
+                    <div>
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-[#71717A] block">
+                        Elige tu espacio
+                      </span>
+                      <span className="text-[10px] text-[#A1A1AA]">
+                        {filteredCabins.length} opciones disponibles
+                      </span>
+                    </div>
+                    <div className="inline-flex p-0.5 rounded-lg bg-[#F4F4F5] text-[10px] font-semibold">
+                      <button
+                        onClick={() => setCabinCategoryFilter('all')}
+                        className={`px-2 py-1 rounded-md cursor-pointer transition-colors ${
+                          cabinCategoryFilter === 'all'
+                            ? 'bg-white text-[#09090B] shadow-2xs font-bold'
+                            : 'text-[#71717A] hover:text-[#09090B]'
+                        }`}
+                      >
+                        Todas ({cabins.length})
+                      </button>
+                      <button
+                        onClick={() => setCabinCategoryFilter('cabana')}
+                        className={`px-2 py-1 rounded-md cursor-pointer transition-colors ${
+                          cabinCategoryFilter === 'cabana'
+                            ? 'bg-white text-[#09090B] shadow-2xs font-bold'
+                            : 'text-[#71717A] hover:text-[#09090B]'
+                        }`}
+                      >
+                        Cabañas
+                      </button>
+                      <button
+                        onClick={() => setCabinCategoryFilter('tinaja')}
+                        className={`px-2 py-1 rounded-md cursor-pointer transition-colors ${
+                          cabinCategoryFilter === 'tinaja'
+                            ? 'bg-white text-[#09090B] shadow-2xs font-bold'
+                            : 'text-[#71717A] hover:text-[#09090B]'
+                        }`}
+                      >
+                        Tinajas
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Lista de Tarjetas estilizadas, compactas y balanceadas en Desktop */}
+                  <div className="space-y-1.5 lg:max-h-[320px] overflow-y-auto pr-1 slim-scrollbar">
+                    {filteredCabins.map((cabin) => {
+                      const isSelected = selectedCabin.id === cabin.id;
+                      return (
+                        <button
+                          key={cabin.id}
+                          onClick={() => setSelectedCabin(cabin)}
+                          className={`w-full text-left px-3 py-2.5 rounded-xl border transition-all cursor-pointer active-press ${
+                            isSelected
+                              ? 'bg-[#18181B] text-white border-[#18181B] shadow-sm ring-1 ring-[#18181B]'
+                              : 'bg-[#FAFAFA] hover:bg-neutral-100 text-[#09090B] border-[#E4E4E7]'
+                          }`}
+                        >
+                          {/* Fila 1: Nombre, Tag/Badge y Precio */}
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              <span className="font-bold text-xs truncate">{cabin.name}</span>
+                              {isSelected ? (
+                                <span className="inline-flex items-center gap-0.5 text-[9px] font-bold bg-[#F0A71D] text-[#18181B] px-1.5 py-0.2 rounded-full shrink-0">
+                                  <Check className="w-2.5 h-2.5 stroke-[3]" />
+                                  Elegida
+                                </span>
+                              ) : cabin.tag ? (
+                                <span className="text-[9px] px-1.5 py-0.2 rounded bg-neutral-200/60 text-[#71717A] font-medium shrink-0">
+                                  {cabin.tag}
+                                </span>
+                              ) : null}
+                            </div>
+                            <span
+                              className={`text-xs font-bold tabular-nums shrink-0 ${
+                                isSelected ? 'text-[#F0A71D]' : 'text-[#09090B]'
+                              }`}
+                            >
+                              {cabin.priceLabel}
+                            </span>
+                          </div>
+
+                          {/* Fila 2: Subtítulo descriptivo y Capacidad */}
+                          <div className="flex items-center justify-between gap-2 mt-1">
+                            <p
+                              className={`text-[11px] truncate ${
+                                isSelected ? 'text-white/75' : 'text-[#71717A]'
+                              }`}
+                            >
+                              {cabin.subtitle}
+                            </p>
+                            <span
+                              className={`text-[10px] font-semibold shrink-0 ${
+                                isSelected ? 'text-white/70' : 'text-[#71717A]'
+                              }`}
+                            >
+                              {cabin.capacity}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
-                {/* Lista de Tarjetas */}
-                <div className="space-y-2">
-                  {filteredCabins.map((cabin) => {
-                    const isSelected = selectedCabin.id === cabin.id;
-                    return (
-                      <button
-                        key={cabin.id}
-                        onClick={() => setSelectedCabin(cabin)}
-                        className={`w-full text-left p-3.5 rounded-2xl border transition-all cursor-pointer active-press ${
-                          isSelected
-                            ? 'bg-[#18181B] text-white border-[#18181B] shadow-md ring-1 ring-[#18181B]'
-                            : 'bg-white text-[#09090B] border-[#E4E4E7] hover:border-neutral-300 shadow-2xs'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-xs truncate">{cabin.name}</span>
-                          {isSelected ? (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-[#F0A71D] text-[#18181B] px-1.5 py-0.5 rounded-full">
-                              <Check className="w-3 h-3 stroke-[3]" />
-                              Elegida
-                            </span>
-                          ) : (
-                            <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-[#F4F4F5] text-[#71717A]">
-                              {cabin.tag || cabin.type}
-                            </span>
-                          )}
-                        </div>
-
-                        <p
-                          className={`text-[11px] mt-1 line-clamp-1 ${
-                            isSelected ? 'text-white/80' : 'text-[#71717A]'
-                          }`}
-                        >
-                          {cabin.subtitle}
-                        </p>
-
-                        <div className="flex items-baseline justify-between mt-2 pt-2 border-t border-dashed border-current/15">
-                          <span
-                            className={`text-[11px] ${
-                              isSelected ? 'text-white/80' : 'text-[#71717A]'
-                            }`}
-                          >
-                            Capacidad: <strong>{cabin.capacity}</strong>
-                          </span>
-                          <span
-                            className={`text-xs font-bold tabular-nums ${
-                              isSelected ? 'text-[#F0A71D]' : 'text-[#09090B]'
-                            }`}
-                          >
-                            {cabin.priceLabel}
-                          </span>
-                        </div>
-                      </button>
-                    );
-                  })}
+                {/* Resumen inferior de cabaña seleccionada en Desktop */}
+                <div className="pt-3 mt-3 border-t border-[#E4E4E7] hidden lg:flex items-center justify-between text-xs text-[#71717A]">
+                  <span className="truncate">
+                    Seleccionado: <strong className="text-[#09090B]">{selectedCabin.name}</strong>
+                  </span>
+                  <span className="font-bold text-[#09090B] tabular-nums shrink-0">
+                    {selectedCabin.priceLabel}
+                  </span>
                 </div>
 
                 {/* Botón continuar en Móvil (Pestaña 1) */}
-                <div className="lg:hidden pt-3">
+                <div className="lg:hidden pt-3 border-t border-[#E4E4E7]">
                   <button
                     onClick={() => setGuestMobileTab('dates')}
-                    className="w-full py-3.5 px-4 rounded-2xl bg-[#18181B] active-press text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm"
+                    className="w-full py-3.5 px-4 rounded-xl bg-[#18181B] active-press text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm"
                   >
                     <span>Elegir Fechas para {selectedCabin.name}</span>
                     <ArrowRight className="w-4 h-4" />

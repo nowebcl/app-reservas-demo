@@ -44,6 +44,25 @@
   scrollbar-width: none;
 }
 
+/* Slim modern scrollbar */
+.slim-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.slim-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.slim-scrollbar::-webkit-scrollbar-thumb {
+  background: #E4E4E7;
+  border-radius: 9999px;
+}
+.slim-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #A1A1AA;
+}
+.slim-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #E4E4E7 transparent;
+}
+
 /* Spring-like active touch feedback */
 .active-press {
   transition: transform 0.12s ease-out, opacity 0.12s ease-out;
